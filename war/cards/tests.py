@@ -224,6 +224,7 @@ class SeleniumTests(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         cls.selenium = WebDriver()
+        Player.objects.create_superuser('superuser', 'superuser@test.com', 'mypassword')
         super(SeleniumTests, cls).setUpClass()
 
     @classmethod
@@ -233,7 +234,6 @@ class SeleniumTests(LiveServerTestCase):
 
     def test_admin_login(self):
         # Create a superuser
-        Player.objects.create_superuser('superuser', 'superuser@test.com', 'mypassword')
 
         # let's open the admin login page
         self.selenium.get("{}{}".format(self.live_server_url, reverse('admin:index')))
@@ -284,3 +284,10 @@ class SeleniumTests(LiveServerTestCase):
         # Check to see we get the card was added success message
         body = self.selenium.find_element_by_tag_name('body')
         self.assertIn('The card "ace of hearts" was added successfully', body.text)
+
+    def test_login(self):
+        self.selenium.get("{}{}".format(self.live_server_url, reverse('login')))
+        self.selenium.find_element_by_id('id_username').send_keys("superuser")
+        self.selenium.find_element_by_id('id_password').send_keys("mypassword")
+        self.selenium.find_element_by_css_selector("input[value='Log in']").click()
+        sleep(5)
