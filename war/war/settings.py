@@ -89,6 +89,7 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, "static", *MEDIA_URL.strip("/").split("/
 
 LOGIN_REDIRECT_URL = 'profile'
 LOGIN_URL = 'login'
+DEFAULT_FROM_EMAIL = 'pwgraham91@gmail.com'
 
 try:
     from local_settings import *
