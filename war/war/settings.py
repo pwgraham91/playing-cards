@@ -30,10 +30,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'django.contrib.contenttypes',
     'cards',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -90,6 +90,8 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, "static", *MEDIA_URL.strip("/").split("/
 LOGIN_REDIRECT_URL = 'profile'
 LOGIN_URL = 'login'
 DEFAULT_FROM_EMAIL = 'pwgraham91@gmail.com'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 try:
     from local_settings import *

@@ -3,8 +3,10 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.forms import EmailField
 from django.http import HttpResponseRedirect
-from django.test import TestCase
+from django.test import TestCase, LiveServerTestCase
 from mock import patch, Mock
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.webdriver import WebDriver
 from cards.forms import EmailUserCreationForm
 from cards.models import Card, Player, WarGame
 from cards.test_utils import run_pyflakes_for_package, run_pep8_for_package
@@ -215,3 +217,28 @@ class ViewTestCase(TestCase):
         mock_response.json.return_value = mock_comic
         self.assertEqual(get_random_comic()['num'], 1433)
         self.assertEqual(get_random_comic()['year'], "2014")
+
+
+class SeleniumTests(LiveServerTestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.selenium = WebDriver()
+        super(SeleniumTests, cls).setUpClass()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.selenium.quit()
+        super(SeleniumTests, cls).tearDownClass()
+
+    def test_admin_login(self):
+        # Create a superuser
+        Player.objects.create_superuser('superuser', 'superuser@test.com', 'mypassword')
+
+        # let's open the admin login page
+        self.selenium.get("{}{}".format(self.live_server_url, reverse('admin:index')))
+        self.selenium.find_element_by_name('username').send_keys('superuser')
+        password_input = self.selenium.find_element_by_name('password')
+        password_input.send_keys('mypassword')
+
+        # Submit the form
+        password_input.send_keys(Keys.RETURN)
