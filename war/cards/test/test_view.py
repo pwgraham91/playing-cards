@@ -73,6 +73,7 @@ class ViewTestCase(TestCase):
 
         # Make the url call and check the html and games queryset length
         response = self.client.get(reverse('profile'))
-        # self.assertIn('<p>Your email address is {}</p>'.format(user.email), response.content)
-        self.assertIn('<p>Hi {}, you have {} wins, {} ties and {} losses.</p>'.format(user.username, user.wins, user.ties, user.losses), response.content)
+        self.assertIn('<p>Your email address is {}</p>'.format(user.email), response.content)
+        # !!!! WORK ON THIS
+        # self.assertIn('<p>Hi {}, you have {} wins, {} ties and {} losses.</p>'.format(user.username, user.wins, user.ties, user.losses), response.content)
         self.assertEqual(len(response.context['games']), 2)
