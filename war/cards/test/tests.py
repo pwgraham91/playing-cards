@@ -23,7 +23,6 @@ class UtilTestCase(TestCase):
         create_deck()
         self.assertEqual(Card.objects.count(), 52)
 
-
     @patch('cards.utils.requests')
     def test_xkcd_page(self, mock_requests):
         mock_comic = {
