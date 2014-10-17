@@ -51,7 +51,8 @@ def profile(request):
     return render(request, 'profile.html', {
         'games': WarGame.objects.filter(player=request.user),
         'wins': request.user.get_wins(),
-        'losses': request.user.get_losses()
+        'losses': request.user.get_losses(),
+        'ties': request.user.get_ties(),
     })
 
 
